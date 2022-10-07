@@ -11,8 +11,8 @@ import com.plcoding.calorytrackerprep.ui.theme.Typography
 import com.plcoding.core_ui.*
 
 private val DarkColorPalette = darkColors(
-    primary = BrightGreen,
-    primaryVariant = DarkGreen,
+    primary = Cordovan,
+    primaryVariant = Mahogany,
     secondary = Orange,
     background = MediumGray,
     onBackground = TextWhite,
@@ -23,8 +23,8 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = BrightGreen,
-    primaryVariant = DarkGreen,
+    primary = Cordovan,
+    primaryVariant = Mahogany,
     secondary = Orange,
     background = Color.White,
     onBackground = DarkGray,

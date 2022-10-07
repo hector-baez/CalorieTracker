@@ -1,9 +1,6 @@
 package com.plcoding.core.domain.preferences
 
-import com.plcoding.core.domain.model.ActivityLevel
-import com.plcoding.core.domain.model.Gender
-import com.plcoding.core.domain.model.GoalType
-import com.plcoding.core.domain.model.UserInfo
+import com.plcoding.core.domain.model.*
 
 interface Preferences {
     fun saveGender(gender: Gender)
@@ -16,7 +13,15 @@ interface Preferences {
     fun saveProteinRatio(ratio: Float)
     fun saveFatRatio(ratio: Float)
 
+    fun saveAuthKey(auth_key: String, auth_key_exp: Long)
+
+    fun loadShouldCreateAuthKey(): Boolean
+
     fun loadUserInfo(): UserInfo
+
+    fun loadAuthTokenInfo(): AuthTokenInfo
+    fun saveShouldGenAuthToken(shouldGenAuthToken: Boolean)
+    fun shouldGenAuthToken(): Boolean
 
     fun saveShouldShowOnboarding(shouldShow: Boolean)
     fun loadShouldShowOnboarding(): Boolean
@@ -31,6 +36,9 @@ interface Preferences {
         const val KEY_CARB_RATIO = "carb_ratio"
         const val KEY_PROTEIN_RATIO = "protein_ratio"
         const val KEY_FAT_RATIO = "fat_ratio"
+        const val KEY_AUTH = "auth_key"
+        const val KEY_SHOULD_CREATE_AUTH_KEY = "should_create_auth_key"
+        const val KEY_AUTH_KEY_EXP = "auth_key_exp"
         const val KEY_SHOULD_SHOW_ONBOARDING = "should_show_onboarding"
     }
 }

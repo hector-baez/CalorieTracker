@@ -4,5 +4,5 @@ package com.plcoding.tracker_data.remote.dto
 //    val products: List<Product>,
 //)
 data class SearchDto(
-    val foods: List<Foods>,
+    val foods: Foods,
 )

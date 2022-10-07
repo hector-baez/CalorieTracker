@@ -1,5 +1,6 @@
 package com.plcoding.tracker_presentation.tracker_overview
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -57,6 +58,7 @@ fun TrackerOverviewScreen(
                                   .padding(horizontal = spacing.spaceSmall)
                           ) {
                               val foods = state.trackedFoods.filter {
+                                  Log.println(Log.DEBUG, "debugging meal type", it.mealType.name + it.name)
                                   it.mealType == meal.mealType
                               }
                               foods.forEach { food ->

@@ -1,10 +1,7 @@
 package com.plcoding.core.data.preferences
 
 import android.content.SharedPreferences
-import com.plcoding.core.domain.model.ActivityLevel
-import com.plcoding.core.domain.model.Gender
-import com.plcoding.core.domain.model.GoalType
-import com.plcoding.core.domain.model.UserInfo
+import com.plcoding.core.domain.model.*
 import com.plcoding.core.domain.preferences.Preferences
 
 class DefaultPreferences(
@@ -62,6 +59,42 @@ class DefaultPreferences(
         sharedPref.edit()
             .putFloat(Preferences.KEY_FAT_RATIO, ratio)
             .apply()
+    }
+
+    override fun saveAuthKey(auth_key: String, auth_key_exp: Long) {
+        sharedPref.edit()
+            .putString(Preferences.KEY_AUTH, auth_key)
+            .putLong(Preferences.KEY_AUTH_KEY_EXP, auth_key_exp)
+            .apply()
+    }
+
+    override fun loadShouldCreateAuthKey(): Boolean {
+        return sharedPref.getBoolean(
+            Preferences.KEY_SHOULD_CREATE_AUTH_KEY,
+            true
+        )
+    }
+
+    override fun loadAuthTokenInfo(): AuthTokenInfo {
+        val auth_key = sharedPref.getString(Preferences.KEY_AUTH, null)
+        val auth_key_exp = sharedPref.getLong(Preferences.KEY_AUTH_KEY_EXP, -1)
+        return AuthTokenInfo(
+            auth_key!!,
+            auth_key_exp
+        )
+    }
+
+    override fun saveShouldGenAuthToken(shouldGenAuthToken: Boolean) {
+        sharedPref.edit()
+            .putBoolean(Preferences.KEY_SHOULD_CREATE_AUTH_KEY, shouldGenAuthToken)
+            .apply()
+    }
+
+    override fun shouldGenAuthToken(): Boolean {
+        return sharedPref.getBoolean(
+            Preferences.KEY_SHOULD_CREATE_AUTH_KEY,
+            true
+        )
     }
 
     override fun loadUserInfo(): UserInfo {

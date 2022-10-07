@@ -37,7 +37,7 @@ class SearchViewModel @Inject constructor(
                 state = state.copy(
                     trackableFood = state.trackableFood.map {
                         if(it.food == event.food) {
-                            it.copy(amount = filterOutDigits(event.amount))
+                            it.copy(amount = if (event.amount.split(".").size > 2 || event.amount.contains("-")) event.amount.dropLast(1) else event.amount)
                         } else it
                     }
                 )
@@ -71,8 +71,9 @@ class SearchViewModel @Inject constructor(
                 isSearching = true,
                 trackableFood = emptyList()
             )
+            val authKey = trackerUseCases.trackAuthKey()
             trackerUseCases
-                .searchFood(state.query)
+                .searchFood(query=state.query, auth_key=authKey.authKey)
                 .onSuccess { foods ->
                     state = state.copy(
                         trackableFood = foods.map {
@@ -98,7 +99,7 @@ class SearchViewModel @Inject constructor(
             val uiState = state.trackableFood.find { it.food == event.food }
             trackerUseCases.trackFood(
                 food = uiState?.food ?: return@launch,
-                amount = uiState.amount.toIntOrNull() ?: return@launch,
+                amount = uiState.amount.toFloatOrNull() ?: return@launch,
                 mealType = event.mealType,
                 date = event.date
             )

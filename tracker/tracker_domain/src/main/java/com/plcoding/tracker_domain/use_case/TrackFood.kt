@@ -13,17 +13,17 @@ class TrackFood(
 
     suspend operator fun invoke(
         food: TrackableFood,
-        amount: Int,
+        amount: Float,
         mealType: MealType,
         date: LocalDate,
     ) {
         repository.insertTrackedFood(
             TrackedFood(
                 name = food.name,
-                carbs = ((food.carbsPer100g / 100f) * amount).roundToInt(),
-                protein = ((food.proteinPer100g / 100f) * amount).roundToInt(),
-                fat = ((food.fatPer100g / 100f) * amount).roundToInt(),
-                calories = ((food.caloriesPer100g / 100f) * amount).roundToInt(),
+                carbs = (food.carbs * amount).roundToInt(),
+                protein = (food.protein * amount).roundToInt(),
+                fat = (food.fat * amount).roundToInt(),
+                calories = (food.calories * amount).roundToInt(),
                 imageUrl = food.image,
                 mealType = mealType,
                 amount = amount,

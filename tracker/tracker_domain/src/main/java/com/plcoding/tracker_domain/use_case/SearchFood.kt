@@ -11,10 +11,11 @@ class SearchFood(
         query: String,
         page: Int = 1,
         pageSize: Int = 40,
+        auth_key: String
     ): Result<List<TrackableFood>> {
         if(query.isBlank()) {
             return Result.success(emptyList())
         }
-        return repository.searchFood(query.trim(), page, pageSize)
+        return repository.searchFood(query.trim(), page, pageSize, auth_key)
     }
 }

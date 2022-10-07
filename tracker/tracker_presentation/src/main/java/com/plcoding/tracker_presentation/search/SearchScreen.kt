@@ -100,7 +100,7 @@ fun SearchScreen(
                         viewModel.onEvent(
                             SearchEvent.OnTrackFoodClick(
                                 food = food.food,
-                                mealType = MealType.fromString(mealName),
+                                mealType = MealType.fromString(mealName.lowercase()),
                                 date = LocalDate.of(year, month, dayOfMonth)
                             )
                         )

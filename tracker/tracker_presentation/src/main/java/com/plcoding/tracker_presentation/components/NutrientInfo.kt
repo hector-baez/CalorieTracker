@@ -21,7 +21,7 @@ import com.plcoding.core_ui.LocalSpacing
 fun NutrientInfo(
     name: String,
     amount: Int,
-    unit: String,
+    unit: String = "",
     modifier: Modifier = Modifier,
     amountTextSize: TextUnit = 20.sp,
     amountColor: Color = MaterialTheme.colors.onBackground,

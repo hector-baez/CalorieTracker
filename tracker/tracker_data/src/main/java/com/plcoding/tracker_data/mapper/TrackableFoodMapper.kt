@@ -1,25 +1,29 @@
 package com.plcoding.tracker_data.mapper
 
-import com.plcoding.tracker_data.remote.dto.Foods
+import com.plcoding.tracker_data.remote.dto.Food
 import com.plcoding.tracker_domain.model.TrackableFood
-import kotlin.math.roundToInt
 
-fun Foods.toTrackableFood(): TrackableFood? {
-    val carbsPer100g = foodNutrients[2].value.roundToInt()
-//    val carbsPer100g = nutriments.carbohydrates100g.roundToInt()
-    val proteinPer100g = foodNutrients[0].value.roundToInt()
-//    val proteinPer100g = nutriments.proteins100g.roundToInt()
-    val fatPer100g = foodNutrients[1].value.roundToInt()
-//    val fatPer100g = nutriments.fat100g.roundToInt()
-    val caloriesPer100g = foodNutrients[3].value.roundToInt()
-//    val caloriesPer100g = nutriments.energyKcal100g.roundToInt()
+fun Food.toTrackableFood(): TrackableFood? {
+    var carbs = 0
+    var protein = 0
+    var fat = 0
+    var calories = 0
+
+    var nutrientsArray = nutrients.split("-").toTypedArray()[1]
+    carbs = nutrientsArray.split('|').toTypedArray()[2].replace(Regex("[^0-9.]"), "").toFloat().toInt()
+    protein = nutrientsArray.split('|').toTypedArray()[3].replace(Regex("[^0-9.]"), "").toFloat().toInt()
+    fat = nutrientsArray.split('|').toTypedArray()[1].replace(Regex("[^0-9.]"), "").toFloat().toInt()
+    calories = nutrientsArray.split('|').toTypedArray()[0].replace(Regex("[^0-9.]"), "").toFloat().toInt()
+
+    val quantity = nutrients.split("-").toTypedArray()[0]
 
     return TrackableFood(
-        name = productName ?: return null,
-        carbsPer100g = carbsPer100g,
-        proteinPer100g = proteinPer100g,
-        fatPer100g = fatPer100g,
-        caloriesPer100g = caloriesPer100g,
-        image = "https://images.openfoodfacts.org/images/products/002/571/392/1305/front_en.4.100.jpg"
+        name = if (this.brandName != null) this.brandName + " - " + this.name else this.name,
+        carbs = carbs,
+        protein = protein,
+        fat = fat,
+        calories = calories,
+        image = imageUrl,
+        quantity = quantity
     )
 }

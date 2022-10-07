@@ -1,5 +1,6 @@
 package com.plcoding.tracker_data.remote.repository
 
+import com.plcoding.core.domain.preferences.Preferences
 import com.plcoding.tracker_data.local.TrackerDao
 import com.plcoding.tracker_data.mapper.toTrackableFood
 import com.plcoding.tracker_data.mapper.toTrackedFood
@@ -8,6 +9,7 @@ import com.plcoding.tracker_data.remote.OpenFoodApi
 import com.plcoding.tracker_domain.model.TrackableFood
 import com.plcoding.tracker_domain.model.TrackedFood
 import com.plcoding.tracker_domain.repository.TrackerRepository
+import com.plcoding.tracker_domain.use_case.TrackAuthKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
@@ -20,16 +22,16 @@ class TrackerRepositoryImpl(
     override suspend fun searchFood(
         query: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        auth_key: String
     ): Result<List<TrackableFood>> {
         return try {
             val searchDto = api.searchFood(
-                query = query,
-                page = page,
-                pageSize = pageSize
+                search_expression = query,
+                auth_token = auth_key
             )
             Result.success(
-                searchDto.foods
+                searchDto.foods.food
 //                    .filter {
 //                        val calculatedCalories = it.nutriments.carbohydrates100g * 4f +
 //                                it.nutriments.proteins100g * 4f +
@@ -62,5 +64,39 @@ class TrackerRepositoryImpl(
         ).map { entities ->
             entities.map { it.toTrackedFood() }
         }
+    }
+
+    override suspend fun getAuthToken(preferences: Preferences): TrackAuthKey.AuthToken {
+        var expiration: Long
+        var auth_key: String
+
+        val current = System.nanoTime() / 1000000000
+        val shouldCreateAuthKey = preferences.shouldGenAuthToken()
+        if (shouldCreateAuthKey) {
+            expiration = current + 43200 // request new token every 12 hours
+            val authToken = api.createAuthKey()
+            Result.success(
+                preferences.saveAuthKey(authToken.access_token, expiration)
+            )
+            auth_key = authToken.access_token
+        } else {
+            val authTokenInfo = preferences.loadAuthTokenInfo()
+            expiration = authTokenInfo.auth_expiration
+            if (current > expiration){
+                expiration = current + 43200 // request new token every 12 hours
+                val authToken = api.createAuthKey()
+                Result.success(
+                    preferences.saveAuthKey(authToken.access_token, expiration)
+                )
+                auth_key = authToken.access_token
+            } else {
+                auth_key = authTokenInfo.auth_token
+            }
+        }
+        preferences.saveShouldGenAuthToken(false)
+        return TrackAuthKey.AuthToken(
+            auth_key,
+            expiration
+        )
     }
 }
