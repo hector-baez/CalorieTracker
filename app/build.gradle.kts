@@ -105,4 +105,6 @@ dependencies {
     androidTestImplementation(Testing.hiltTesting)
     kaptAndroidTest(DaggerHilt.hiltCompiler)
     androidTestImplementation(Testing.testRunner)
+
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.17.0")
 }
