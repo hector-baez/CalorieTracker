@@ -74,65 +74,74 @@ fun TrackedFoodItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(
-                text = trackedFood.name,
-                style = MaterialTheme.typography.body1,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2
-            )
+            Row (
+                modifier = Modifier.fillMaxWidth()
+                    ) {
+                Text(
+                    text = trackedFood.name,
+                    style = MaterialTheme.typography.body1,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.width(spacing.spaceExtraSmall))
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(id = R.string.delete),
+                    modifier = Modifier
+                        .clickable { onDeleteClick() }
+                        .align(Alignment.Top)
+                )
+            }
             Spacer(modifier = Modifier.height(spacing.spaceExtraSmall))
-            Text(
-                text = stringResource(
-                    id = R.string.nutrient_info,
-                    trackedFood.amount.toString(),
-                    trackedFood.calories.toString()
-                ),
-                style = MaterialTheme.typography.body2
-            )
+            Row{
+                Text(
+                    text = stringResource(
+                        id = R.string.nutrient_info,
+                        trackedFood.amount.toString(),
+                        trackedFood.calories.toString()
+                    ),
+                    style = MaterialTheme.typography.body2,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.width(spacing.spaceMedium))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(2f)
+                ) {
+                    NutrientInfo(
+                        name = stringResource(id = R.string.carbs),
+                        amount = trackedFood.carbs,
+                        unit = stringResource(id = R.string.grams),
+                        amountTextSize = 16.sp,
+                        unitTextSize = 12.sp,
+                        nameTextStyle = MaterialTheme.typography.body2
+                    )
+                    Spacer(modifier = Modifier.width(spacing.spaceSmall))
+                    NutrientInfo(
+                        name = stringResource(id = R.string.protein),
+                        amount = trackedFood.protein,
+                        unit = stringResource(id = R.string.grams),
+                        amountTextSize = 16.sp,
+                        unitTextSize = 12.sp,
+                        nameTextStyle = MaterialTheme.typography.body2
+                    )
+                    Spacer(modifier = Modifier.width(spacing.spaceSmall))
+                    NutrientInfo(
+                        name = stringResource(id = R.string.fat),
+                        amount = trackedFood.fat,
+                        unit = stringResource(id = R.string.grams),
+                        amountTextSize = 16.sp,
+                        unitTextSize = 12.sp,
+                        nameTextStyle = MaterialTheme.typography.body2
+                    )
+                }
+            }
         }
-        Spacer(modifier = Modifier.width(spacing.spaceMedium))
         Column(
             modifier = Modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = stringResource(id = R.string.delete),
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .clickable { onDeleteClick() }
-            )
-            Spacer(modifier = Modifier.height(spacing.spaceExtraSmall))
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                NutrientInfo(
-                    name = stringResource(id = R.string.carbs),
-                    amount = trackedFood.carbs,
-                    unit = stringResource(id = R.string.grams),
-                    amountTextSize = 16.sp,
-                    unitTextSize = 12.sp,
-                    nameTextStyle = MaterialTheme.typography.body2
-                )
-                Spacer(modifier = Modifier.width(spacing.spaceSmall))
-                NutrientInfo(
-                    name = stringResource(id = R.string.protein),
-                    amount = trackedFood.protein,
-                    unit = stringResource(id = R.string.grams),
-                    amountTextSize = 16.sp,
-                    unitTextSize = 12.sp,
-                    nameTextStyle = MaterialTheme.typography.body2
-                )
-                Spacer(modifier = Modifier.width(spacing.spaceSmall))
-                NutrientInfo(
-                    name = stringResource(id = R.string.fat),
-                    amount = trackedFood.fat,
-                    unit = stringResource(id = R.string.grams),
-                    amountTextSize = 16.sp,
-                    unitTextSize = 12.sp,
-                    nameTextStyle = MaterialTheme.typography.body2
-                )
-            }
         }
     }
 }

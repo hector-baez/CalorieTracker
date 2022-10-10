@@ -70,10 +70,10 @@ class TrackerRepositoryImpl(
         var expiration: Long
         var auth_key: String
 
-        val current = System.nanoTime() / 1000000000
+        val current = System.currentTimeMillis() / 1000
         val shouldCreateAuthKey = preferences.shouldGenAuthToken()
         if (shouldCreateAuthKey) {
-            expiration = current + 43200 // request new token every 12 hours
+            expiration = current + 82800 // request new token every 12 hours
             val authToken = api.createAuthKey()
             Result.success(
                 preferences.saveAuthKey(authToken.access_token, expiration)
@@ -83,7 +83,7 @@ class TrackerRepositoryImpl(
             val authTokenInfo = preferences.loadAuthTokenInfo()
             expiration = authTokenInfo.auth_expiration
             if (current > expiration){
-                expiration = current + 43200 // request new token every 12 hours
+                expiration = current + 82800 // request new token every 12 hours
                 val authToken = api.createAuthKey()
                 Result.success(
                     preferences.saveAuthKey(authToken.access_token, expiration)

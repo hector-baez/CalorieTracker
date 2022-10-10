@@ -14,8 +14,7 @@ data class Food(
     @field:Json(name = "food_description")
     val nutrients: String,
     @field:Json(name = "food_url")
-    val imageUrl: String?,
-//    val servingSizes: List<ServingSizes>?
+    val imageUrl: String?
 )
 
 data class Nutrients(
